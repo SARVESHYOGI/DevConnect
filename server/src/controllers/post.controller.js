@@ -12,4 +12,24 @@ export async function createPost(req, res) {
   }
 }
 
+export async function getpost(req, res) {
+  try {
+    const posts = await Post.find().populate("user", "username");
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
+export async function getpostbyid(req, res) {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id).populate("user", "username");
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    return res.status(200).json({ post });
+  } catch (error) {
+    console.error(error);
+  }
+}
