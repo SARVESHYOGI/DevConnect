@@ -33,3 +33,17 @@ export async function getpostbyid(req, res) {
     console.error(error);
   }
 }
+
+export async function updatepost(req, res) {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+    const updatedPost = await Post.findByIdAndUpdate(id, { title, content }, { new: true });
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.error(error)
+  }
+}
